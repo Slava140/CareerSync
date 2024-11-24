@@ -3,21 +3,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
+from api.v1.auth.utils import get_access_token_exp
 from base_pydantic_types import UTCDatetime
-from config import settings
 
 
-def get_access_token_exp():
-    return datetime.now(tz=timezone.utc) + settings.access_token_ttl_timedelta
-
-
-class BaseAccessTokenSchema(BaseModel):
+class AccessTokenSchema(BaseModel):
     sub: UUID
     exp: UTCDatetime = Field(default_factory=get_access_token_exp)
-
-
-class AccessTokenPayloadSchema(BaseAccessTokenSchema):
-    ...
 
 
 class FingerprintSchema(BaseModel):

@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from api.v1.auth.schemas.auth import InLoginSchema, OutLoginSchema, TokensPairSchema
-from api.v1.auth.schemas.token import FingerprintSchema, AccessTokenPayloadSchema
+from api.v1.auth.schemas.token import FingerprintSchema, AccessTokenSchema
 from api.v1.auth.services.refresh_session import RefreshSessionService
 from api.v1.auth.utils import get_hashed_string, is_correct_hash, generate_access_token
 from api.v1.profile.schemas.user import InUserSchema
@@ -41,7 +41,7 @@ class AuthService:
         if len(active_user_sessions) >= settings.MAX_ACTIVE_USER_SESSIONS_COUNT:
             raise UserWithUUIDAlreadyHasMaximumRefreshSessionsError(user_uuid, settings.MAX_ACTIVE_USER_SESSIONS_COUNT)
 
-        access_token_payload = AccessTokenPayloadSchema(sub=user_uuid)
+        access_token_payload = AccessTokenSchema(sub=user_uuid)
         access_token = generate_access_token(access_token_payload)
         header_and_payload, signature = access_token.rsplit('.', maxsplit=1)
         refresh_session = RefreshSessionService.add_session(
@@ -76,7 +76,7 @@ class AuthService:
         refresh_session = RefreshSessionService.get_refresh_session_by_refresh_token(db_session, refresh_token)
         if refresh_session.expires_in <= datetime.now(timezone.utc):
             raise InvalidTokenError
-        access_token_payload = AccessTokenPayloadSchema(sub=refresh_session.user_uuid)
+        access_token_payload = AccessTokenSchema(sub=refresh_session.user_uuid)
         new_access_token = generate_access_token(access_token_payload)
         header_and_payload, signature = new_access_token.rsplit('.', maxsplit=1)
         return TokensPairSchema(

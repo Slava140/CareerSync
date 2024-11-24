@@ -1,16 +1,6 @@
 from uuid import UUID
 
 
-# class EmailAlreadyExistsError(Exception):
-#     def __init__(self, email: str):
-#         super().__init__(f"User(email=\"{email}\") already exists")
-
-
-# class EmailNotFoundError(Exception):
-#     def __init__(self, email: str):
-#         super().__init__(f"User(email=\"{email}\") was not found")
-
-
 class InvalidEmailOrPasswordError(Exception):
     def __init__(self):
         super().__init__(f"Invalid email or password")
@@ -47,3 +37,4 @@ class UserNotFoundError(Exception):
             user_part = f"User({what_not_found}=\"{str(value)}\")"
 
         super().__init__(f"{user_part} was not found")
+

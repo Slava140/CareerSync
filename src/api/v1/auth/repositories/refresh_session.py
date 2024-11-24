@@ -4,14 +4,14 @@ from uuid import UUID
 from sqlalchemy import insert, select, delete
 from sqlalchemy.orm import Session
 
-from api.v1.auth.schemas.refresh_session import InRefreshSessionSchema, OutRefreshSessionSchema
+from api.v1.auth.schemas.refresh_session import RefreshSessionSchema, RefreshSessionSchema
 from api.v1.auth.models.refresh_session import RefreshSessionModel
 from by_objects import ByObject
 
 
 class RefreshSessionRepository:
     @staticmethod
-    def add_refresh_session(db_session: Session, schema: InRefreshSessionSchema) -> OutRefreshSessionSchema:
+    def add_refresh_session(db_session: Session, schema: RefreshSessionSchema) -> RefreshSessionSchema:
         stmt = insert(
             RefreshSessionModel
         ).values(
@@ -27,10 +27,10 @@ class RefreshSessionRepository:
         )
         result = db_session.execute(stmt).mappings().one_or_none()
         db_session.commit()
-        return OutRefreshSessionSchema(**result)
+        return RefreshSessionSchema(**result)
 
     @staticmethod
-    def get_sessions_by(db_session: Session, by: ByObject) -> list[OutRefreshSessionSchema]:
+    def get_sessions_by(db_session: Session, by: ByObject) -> list[RefreshSessionSchema]:
         query = select(
             RefreshSessionModel.uuid,
             RefreshSessionModel.user_uuid,
@@ -41,7 +41,7 @@ class RefreshSessionRepository:
         )
 
         result = db_session.execute(query).mappings().fetchall()
-        return [OutRefreshSessionSchema(**s) for s in result]
+        return [RefreshSessionSchema(**s) for s in result]
 
     @staticmethod
     def delete_sessions_by(db_session: Session, by: ByObject) -> None:

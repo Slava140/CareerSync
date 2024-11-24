@@ -1,9 +1,19 @@
+from datetime import datetime, timezone
+
 import bcrypt
 import jwt
 
-from api.v1.auth.schemas.token import AccessTokenPayloadSchema
+from api.v1.auth.schemas.token import AccessTokenSchema
 from config import settings
 from errors import InvalidTokenError
+
+
+def get_access_token_exp():
+    return datetime.now(tz=timezone.utc) + settings.access_token_ttl_timedelta
+
+
+def get_refresh_token_exp():
+    return datetime.now(tz=timezone.utc) + settings.refresh_token_ttl_timedelta
 
 
 def get_hashed_string(string: str) -> str:
@@ -19,7 +29,7 @@ def is_correct_hash(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(password_bytes, hashed_password_bytes)
 
 
-def generate_access_token(schema: AccessTokenPayloadSchema) -> str:
+def generate_access_token(schema: AccessTokenSchema) -> str:
     payload = dict(
         sub=str(schema.sub),
         exp=schema.exp
@@ -31,7 +41,7 @@ def generate_access_token(schema: AccessTokenPayloadSchema) -> str:
     )
 
 
-def decode_access_token(token: str) -> AccessTokenPayloadSchema:
+def decode_access_token(token: str) -> AccessTokenSchema:
     """
     :except InvalidTokenError
     """
@@ -41,6 +51,6 @@ def decode_access_token(token: str) -> AccessTokenPayloadSchema:
             key=settings.JWT_SECRET,
             algorithms=['HS256']
         )
-        return AccessTokenPayloadSchema(sub=payload.get('sub'), exp=payload.get('exp'))
+        return AccessTokenSchema(sub=payload.get('sub'), exp=payload.get('exp'))
     except jwt.InvalidTokenError:
         raise InvalidTokenError

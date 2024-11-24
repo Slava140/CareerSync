@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from api.v1.auth.models.refresh_session import RefreshSessionModel
-from api.v1.auth.schemas.refresh_session import InRefreshSessionSchema, OutRefreshSessionSchema
+from api.v1.auth.schemas.refresh_session import RefreshSessionSchema, RefreshSessionSchema
 from api.v1.auth.schemas.token import FingerprintSchema
 from api.v1.auth.repositories.refresh_session import RefreshSessionRepository
 from api.v1.auth.utils import get_hashed_string
@@ -27,8 +27,8 @@ def _generate_refresh_token(fingerprint: FingerprintSchema) -> str:
 
 class RefreshSessionService:
     @staticmethod
-    def add_session(db_session: Session, user_uuid: UUID, fingerprint: FingerprintSchema) -> OutRefreshSessionSchema:
-        schema = InRefreshSessionSchema(
+    def add_session(db_session: Session, user_uuid: UUID, fingerprint: FingerprintSchema) -> RefreshSessionSchema:
+        schema = RefreshSessionSchema(
             user_uuid=user_uuid,
             refresh_token=_generate_refresh_token(fingerprint)
         )
@@ -36,12 +36,12 @@ class RefreshSessionService:
         return result
 
     @staticmethod   
-    def get_refresh_sessions_by_user_uuid(db_session: Session, user_uuid: UUID) -> list[OutRefreshSessionSchema]:
+    def get_refresh_sessions_by_user_uuid(db_session: Session, user_uuid: UUID) -> list[RefreshSessionSchema]:
         by_uuid = ByUUID(RefreshSessionModel.user_uuid, user_uuid)
         return RefreshSessionRepository.get_sessions_by(db_session, by_uuid)
 
     @staticmethod
-    def get_refresh_session_by_refresh_token(db_session: Session, token: str) -> OutRefreshSessionSchema:
+    def get_refresh_session_by_refresh_token(db_session: Session, token: str) -> RefreshSessionSchema:
         """
         :except InvalidTokenError
         """
