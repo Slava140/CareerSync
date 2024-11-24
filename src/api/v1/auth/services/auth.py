@@ -2,8 +2,8 @@ from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
 
-from api.v1.auth.schemas.auth import InLoginSchema, OutLoginSchema, TokensPairSchema
-from api.v1.auth.schemas.token import FingerprintSchema, AccessTokenSchema
+from api.v1.auth.schemas.auth import InLoginSchema, OutLoginSchema, TokensPairSchema, AccessTokenSchema, \
+    FingerprintSchema
 from api.v1.auth.services.refresh_session import RefreshSessionService
 from api.v1.auth.utils import get_hashed_string, is_correct_hash, generate_access_token
 from api.v1.profile.schemas.user import InUserSchema

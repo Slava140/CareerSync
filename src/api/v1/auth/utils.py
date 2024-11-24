@@ -3,17 +3,9 @@ from datetime import datetime, timezone
 import bcrypt
 import jwt
 
-from api.v1.auth.schemas.token import AccessTokenSchema
+from api.v1.auth.schemas.auth import AccessTokenSchema
 from config import settings
 from errors import InvalidTokenError
-
-
-def get_access_token_exp():
-    return datetime.now(tz=timezone.utc) + settings.access_token_ttl_timedelta
-
-
-def get_refresh_token_exp():
-    return datetime.now(tz=timezone.utc) + settings.refresh_token_ttl_timedelta
 
 
 def get_hashed_string(string: str) -> str:

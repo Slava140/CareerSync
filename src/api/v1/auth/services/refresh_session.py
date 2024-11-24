@@ -5,8 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from api.v1.auth.models.refresh_session import RefreshSessionModel
-from api.v1.auth.schemas.refresh_session import RefreshSessionSchema, RefreshSessionSchema
-from api.v1.auth.schemas.token import FingerprintSchema
+from api.v1.auth.schemas.auth import RefreshSessionSchema, FingerprintSchema
 from api.v1.auth.repositories.refresh_session import RefreshSessionRepository
 from api.v1.auth.utils import get_hashed_string
 from by_objects import ByToken, ByUUID

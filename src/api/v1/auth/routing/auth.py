@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Request, Response, status
 from fastapi.exceptions import HTTPException
 
-from api.v1.auth.schemas.token import FingerprintSchema
 from api.v1.auth.services.auth import AuthService
-from api.v1.auth.schemas.auth import InLoginSchema, OutLoginSchema, TokensPairSchema
+from api.v1.auth.schemas.auth import InLoginSchema, OutLoginSchema, TokensPairSchema, FingerprintSchema
 from api.v1.profile.schemas.user import OutUserSchema, InUserSchema
 from depends import dbDependency
 from errors import (

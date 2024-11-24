@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlalchemy import insert, select, delete
 from sqlalchemy.orm import Session
 
-from api.v1.auth.schemas.refresh_session import RefreshSessionSchema, RefreshSessionSchema
+from api.v1.auth.schemas.auth import RefreshSessionSchema
 from api.v1.auth.models.refresh_session import RefreshSessionModel
 from by_objects import ByObject
 

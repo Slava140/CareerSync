@@ -6,8 +6,7 @@ from sqladmin import Admin
 from admin_panel.views.user import UserAdminView
 
 from api.routing import router as api_router
-from api.v1.auth.schemas.refresh_session import RefreshSessionSchema
-from api.v1.auth.schemas.token import FingerprintSchema
+from api.v1.auth.schemas.auth import RefreshSessionSchema, FingerprintSchema
 from api.v1.auth.services.refresh_session import RefreshSessionService
 from api.v1.profile.schemas.user import InUserSchema
 from api.v1.profile.services.user import UserService
